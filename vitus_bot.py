@@ -14,9 +14,9 @@ NAME, SERVICE, BESCHREIBUNG, FOTOS, TELEFON = range(5)
  
 SERVICES = [
     "Kleinreparatur",
-    "Grossreparatur",
+    "Großreparatur",
     "Reinigung",
-    "Naeharbeit",
+    "Näharbeit",
 ]
  
 logging.basicConfig(
@@ -32,7 +32,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "1. Geben Sie Ihren Namen ein\n"
         "2. Wählen Sie einen oder mehrere Services aus - klicken Sie die Antworten einfach nacheinander an\n"
         "3. Beschreiben Sie das Problem\n"
-        "4. Schicken Sie Fotos der Schaden\n"
+        "4. Schicken Sie Fotos der Schäden\n"
         "5. Teilen Sie uns Ihre Telefonnummer mit\n\n"
         "Wie ist Ihr Name?",
         reply_markup=ReplyKeyboardRemove()
@@ -53,7 +53,7 @@ async def get_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Welchen Service benötigen Sie?\n"
         "Klicken Sie die gewünschten Services einfach nacheinander an.\n"
         "Wenn Sie fertig sind, drücken Sie auf Weiter.\n"
-        "Sie konnen mehrere Services auswahlen.",
+        "Sie können mehrere Services auswählen.",
         reply_markup=ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
     )
     return SERVICE
@@ -68,7 +68,7 @@ async def get_service(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return SERVICE
  
         await update.message.reply_text(
-            f"Ausgewahlt: {', '.join(selected)}\n\n"
+            f"Ausgewählt: {', '.join(selected)}\n\n"
             "Bitte beschreiben Sie das Problem so genau wie möglich.",
             reply_markup=ReplyKeyboardRemove()
         )
@@ -81,11 +81,11 @@ async def get_service(update: Update, context: ContextTypes.DEFAULT_TYPE):
             msg = f"{text} entfernt."
         else:
             services.append(text)
-            msg = f"{text} hinzugefugt."
+            msg = f"{text} hinzugefügt."
         context.user_data["services"] = services
         current = ", ".join(services) if services else "Noch nichts ausgewählt"
         await update.message.reply_text(
-            f"{msg}\n\nAktuell ausgewahlt: {current}\n\nWeitere Services auswahlen oder Weiter drucken."
+            f"{msg}\n\nAktuell ausgewählt: {current}\n\nWeitere Services auswählen oder Weiter drücken."
         )
         return SERVICE
  
@@ -97,7 +97,7 @@ async def get_beschreibung(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["fotos"] = []
  
     await update.message.reply_text(
-        "Bitte schicken Sie uns Fotos der Schaden.\n\n"
+        "Bitte schicken Sie uns Fotos der Schäden.\n\n"
         "Schicken Sie alle Fotos nacheinander. Wenn Sie fertig sind, drücken Sie auf Fertig.",
         reply_markup=ReplyKeyboardMarkup([[KeyboardButton("Fertig")]], resize_keyboard=True)
     )
@@ -123,7 +123,7 @@ async def get_fotos(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return TELEFON
  
-    await update.message.reply_text("Bitte schicken Sie Fotos oder drucken Sie Fertig.")
+    await update.message.reply_text("Bitte schicken Sie Fotos oder drücken Sie Fertig.")
     return FOTOS
  
 async def get_telefon(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -146,7 +146,7 @@ async def abschliessen(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         f"Vielen Dank, {name}!\n\n"
         "Wir haben Ihre Anfrage erhalten und werden die Fotos analysieren.\n"
-        "Sie erhalten so schnell wie moglich ein individuelles Angebot von uns.\n\n"
+        "Sie erhalten so schnell wie möglich ein individuelles Angebot von uns.\n\n"
         "Ihr VITUS Camper-Service Team",
         reply_markup=ReplyKeyboardRemove()
     )
@@ -196,8 +196,12 @@ def main():
     )
  
     app.add_handler(conv)
-    print("VITUS Bot laeuft...")
+    print("VITUS Bot läuft...")
     app.run_polling()
+ 
+if __name__ == "__main__":
+    main()
+ 
  
 if __name__ == "__main__":
     main()
