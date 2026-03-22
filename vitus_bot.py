@@ -30,7 +30,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Willkommen bei VITUS Camper-Service!\n\n"
         "Um eine Serviceanfrage zu stellen, gehen Sie bitte wie folgt vor:\n\n"
         "1. Geben Sie Ihren Namen ein\n"
-        "2. Wahlen Sie einen oder mehrere Services aus - klicken Sie die Antworten einfach nacheinander an\n"
+        "2. Wählen Sie einen oder mehrere Services aus - klicken Sie die Antworten einfach nacheinander an\n"
         "3. Beschreiben Sie das Problem\n"
         "4. Schicken Sie Fotos der Schaden\n"
         "5. Teilen Sie uns Ihre Telefonnummer mit\n\n"
@@ -50,9 +50,9 @@ async def get_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
  
     await update.message.reply_text(
         f"Guten Tag, {name}!\n\n"
-        "Welchen Service benotigen Sie?\n"
-        "Klicken Sie die gewunschten Services einfach nacheinander an.\n"
-        "Wenn Sie fertig sind, drucken Sie auf Weiter.\n"
+        "Welchen Service benötigen Sie?\n"
+        "Klicken Sie die gewünschten Services einfach nacheinander an.\n"
+        "Wenn Sie fertig sind, drücken Sie auf Weiter.\n"
         "Sie konnen mehrere Services auswahlen.",
         reply_markup=ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
     )
@@ -64,12 +64,12 @@ async def get_service(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if text == "Weiter":
         selected = context.user_data.get("services", [])
         if not selected:
-            await update.message.reply_text("Bitte wahlen Sie mindestens einen Service aus.")
+            await update.message.reply_text("Bitte wählen Sie mindestens einen Service aus.")
             return SERVICE
  
         await update.message.reply_text(
             f"Ausgewahlt: {', '.join(selected)}\n\n"
-            "Bitte beschreiben Sie das Problem so genau wie moglich.",
+            "Bitte beschreiben Sie das Problem so genau wie möglich.",
             reply_markup=ReplyKeyboardRemove()
         )
         return BESCHREIBUNG
@@ -83,13 +83,13 @@ async def get_service(update: Update, context: ContextTypes.DEFAULT_TYPE):
             services.append(text)
             msg = f"{text} hinzugefugt."
         context.user_data["services"] = services
-        current = ", ".join(services) if services else "Noch nichts ausgewahlt"
+        current = ", ".join(services) if services else "Noch nichts ausgewählt"
         await update.message.reply_text(
             f"{msg}\n\nAktuell ausgewahlt: {current}\n\nWeitere Services auswahlen oder Weiter drucken."
         )
         return SERVICE
  
-    await update.message.reply_text("Bitte wahlen Sie einen Service aus der Liste oder drucken Sie Weiter.")
+    await update.message.reply_text("Bitte wählen Sie einen Service aus der Liste oder drücken Sie Weiter.")
     return SERVICE
  
 async def get_beschreibung(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -98,7 +98,7 @@ async def get_beschreibung(update: Update, context: ContextTypes.DEFAULT_TYPE):
  
     await update.message.reply_text(
         "Bitte schicken Sie uns Fotos der Schaden.\n\n"
-        "Schicken Sie alle Fotos nacheinander. Wenn Sie fertig sind, drucken Sie auf Fertig.",
+        "Schicken Sie alle Fotos nacheinander. Wenn Sie fertig sind, drücken Sie auf Fertig.",
         reply_markup=ReplyKeyboardMarkup([[KeyboardButton("Fertig")]], resize_keyboard=True)
     )
     return FOTOS
@@ -109,15 +109,15 @@ async def get_fotos(update: Update, context: ContextTypes.DEFAULT_TYPE):
         context.user_data["fotos"].append(foto.file_id)
         anzahl = len(context.user_data["fotos"])
         await update.message.reply_text(
-            f"Foto {anzahl} erhalten. Weitere Fotos schicken oder Fertig drucken."
+            f"Foto {anzahl} erhalten. Weitere Fotos schicken oder Fertig drücken."
         )
         return FOTOS
  
     if update.message.text and "Fertig" in update.message.text:
         keyboard = [[KeyboardButton("Telefonnummer teilen", request_contact=True)]]
         await update.message.reply_text(
-            "Bitte teilen Sie uns Ihre Telefonnummer mit, damit wir Sie fur das Angebot erreichen konnen.\n\n"
-            "Drucken Sie den Knopf unten um Ihre Nummer automatisch zu teilen,\n"
+            "Bitte teilen Sie uns Ihre Telefonnummer mit, damit wir Sie für das Angebot erreichen können.\n\n"
+            "Drücken Sie den Knopf unten um Ihre Nummer automatisch zu teilen,\n"
             "oder geben Sie sie manuell ein.",
             reply_markup=ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=True)
         )
@@ -159,7 +159,7 @@ async def abschliessen(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"Telefon: {telefon}\n"
         f"Services: {services_text}\n\n"
         f"Beschreibung:\n{beschreibung}\n\n"
-        f"Fotos: {len(fotos)} Stueck"
+        f"Fotos: {len(fotos)} Stück"
     )
  
     await context.bot.send_message(chat_id=OWNER_CHAT_ID, text=zusammenfassung)
